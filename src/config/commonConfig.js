@@ -1,5 +1,6 @@
 let commonConfig = {
-  userName: 'Shivansh Tyagi'
+  userName: 'Shivansh Tyagi',
+  extraFontSize: 5
 }
 
 export default commonConfig
