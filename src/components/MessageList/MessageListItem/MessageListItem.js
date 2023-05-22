@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Button } from '@mui/material'
+import decodeEmojiString from '../../../utils/decodeEmojiString'
 
 function MessageListItem (props) {
   let { folderName } = props
@@ -16,6 +17,8 @@ function MessageListItem (props) {
     getMessageData()
   }, [getMessageData])
 
+  let decodeEmojiStringCallback = useCallback(decodeEmojiString, [])
+
   return (
     <Button
       to={folderName}
@@ -23,7 +26,7 @@ function MessageListItem (props) {
       className='messageItem'
       LinkComponent={Link}
     >
-      {userData?.title}
+      {decodeEmojiStringCallback(userData?.title)}
     </Button>
   )
 }

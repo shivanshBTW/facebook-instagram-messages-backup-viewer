@@ -1,6 +1,5 @@
 import React from 'react'
-import Header from '../common/Header/Header'
-import folderList from '../../message-data/folderList'
+import folderList from '../../config/folderList'
 import MessageList from '../MessageList/MessageList'
 
 function Home (props) {

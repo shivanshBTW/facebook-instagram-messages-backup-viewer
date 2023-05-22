@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useRef } from 'react'
-import PropTypes from 'prop-types'
-import { Grid, Paper, useTheme } from '@mui/material'
-import { Buffer } from 'buffer'
+import { Grid, useTheme } from '@mui/material'
 import { MessageItemRoot } from './styled'
+import decodeEmojiString from '../../../utils/decodeEmojiString'
+import commonConfig from '../../../config/commonConfig'
 
 function MessageItem (props) {
   let {
@@ -11,30 +11,24 @@ function MessageItem (props) {
   } = props
 
   let theme = useTheme()
-  let isReceiverTheSenderFlag = title === sender_name
+  let isUserTheSender = commonConfig.userName === sender_name
 
-  let decodeFBString = useCallback(str => {
-    let arr = []
-    for (var i = 0; i < str.length; i++) {
-      arr.push(str.charCodeAt(i))
-    }
-    return Buffer.from(arr).toString('utf8')
-  }, [])
+  let decodeEmojiStringCallback = useCallback(decodeEmojiString, [])
 
   return (
-    <Grid item alignSelf={!isReceiverTheSenderFlag ? 'flex-end' : undefined}>
+    <Grid item alignSelf={isUserTheSender ? 'flex-end' : undefined}>
       <MessageItemRoot
         elevation={3}
         style={{
-          backgroundColor: isReceiverTheSenderFlag
+          backgroundColor: !isUserTheSender
             ? theme.palette.primary.main
             : undefined,
-          color: isReceiverTheSenderFlag
+          color: !isUserTheSender
             ? theme.palette.primary.contrastText
             : undefined
         }}
       >
-        {decodeFBString(content)}
+        {decodeEmojiStringCallback(content)}
       </MessageItemRoot>
     </Grid>
   )
