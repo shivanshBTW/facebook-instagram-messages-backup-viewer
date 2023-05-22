@@ -2,13 +2,19 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import MessageItem from './MessageItem/MessageItem'
 import { Grid } from '@mui/material'
-import { MessagesViewerRoot } from './styled'
+import {
+  MessagesViewerPaginationBarContainer,
+  MessagesViewerPaginationTextField,
+  MessagesViewerRoot
+} from './styled'
 import Pagination from '@mui/material/Pagination'
 
 function MessagesViewer (props) {
   let { userId } = useParams()
+  let [selectedPage, setSelectedPage] = useState(2)
 
   let [conversationData, setConversationData] = useState({})
+
   let getMessageData = useCallback(async () => {
     let allConversationsArray = []
     let areAllFilesReadFlag = false
@@ -41,7 +47,7 @@ function MessagesViewer (props) {
     )
 
     finalConversationObject.messages =
-      finalConversationObject.messages.reverse()
+      finalConversationObject.messages.toReversed()
 
     console.log('finalConversationObject', finalConversationObject)
     setConversationData(finalConversationObject)
@@ -51,6 +57,14 @@ function MessagesViewer (props) {
     getMessageData()
   }, [getMessageData])
 
+  const handlePaginationTextChange = event => {
+    setSelectedPage(event.target.value)
+  }
+
+  const handlePaginationSelectorChange = (event, value) => {
+    setSelectedPage(value)
+  }
+
   return (
     <MessagesViewerRoot>
       <Grid
@@ -59,7 +73,6 @@ function MessagesViewer (props) {
         justifyContent='flex-start'
         alignItems='flex-start'
         spacing={{ xs: 2, md: 3 }}
-        // columns={{ xs: 4, sm: 8, md: 12 }}
       >
         {conversationData?.messages?.map(messageData => {
           return (
@@ -72,7 +85,29 @@ function MessagesViewer (props) {
         })}
       </Grid>
 
-      <Pagination count={10} color='primary' />
+      <MessagesViewerPaginationBarContainer>
+        <Pagination
+          showFirstButton
+          showLastButton
+          count={10}
+          color='primary'
+          size='large'
+          shape='rounded'
+          variant='outlined'
+          name='pagination-selector'
+          page={selectedPage}
+          onChange={handlePaginationSelectorChange}
+        />
+        <MessagesViewerPaginationTextField
+          type='number'
+          label='Page'
+          id='outlined-size-small'
+          size='small'
+          name='pagination-text-input'
+          value={selectedPage}
+          onChange={handlePaginationTextChange}
+        />
+      </MessagesViewerPaginationBarContainer>
     </MessagesViewerRoot>
   )
 }
