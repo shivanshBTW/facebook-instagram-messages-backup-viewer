@@ -1,14 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import PropTypes from 'prop-types'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import MessageItem from './MessageItem/MessageItem'
-import Stack from '@mui/material/Stack'
 import { Grid } from '@mui/material'
 import { MessagesViewerRoot } from './styled'
-import AutoSizer from 'react-virtualized-auto-sizer'
-import { VariableSizeList } from 'react-window'
-import { useWindowResize } from '../../utils/useWindowResize'
-import Pagination from '@mui/material/Pagination';
+import Pagination from '@mui/material/Pagination'
 
 function MessagesViewer (props) {
   let { userId } = useParams()
