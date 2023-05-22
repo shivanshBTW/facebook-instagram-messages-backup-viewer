@@ -140,6 +140,10 @@ function MessageItem (props) {
                 }
               })
             : null}
+
+          {!content && !filesDataArray.length ? (
+            <div style={{ fontStyle: 'italic' }}>Empty Message</div>
+          ) : null}
         </MessageItemContent>
       </MessageItemRoot>
 
