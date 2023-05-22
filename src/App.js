@@ -21,7 +21,7 @@ function App () {
   return (
     <div className='App'>
       <ThemeProvider theme={isDarkMode && darkTheme}>
-        <Paper>
+        <Paper square style={{ minHeight: '100vh' }}>
           <Header isDarkMode={isDarkMode} setDarkMode={setDarkMode} />
           <RouterProvider router={router} />
         </Paper>
