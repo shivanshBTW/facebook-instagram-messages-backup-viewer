@@ -5,6 +5,7 @@ import { MessageListRoot } from './styled'
 
 function MessageList (props) {
   let { userList } = props
+
   return (
     <MessageListRoot>
       <Stack spacing={1}>

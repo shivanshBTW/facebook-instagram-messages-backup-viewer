@@ -1,6 +1,5 @@
-import React, { lazy, useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Item } from './styled'
 import { Button } from '@mui/material'
 
 function MessageListItem (props) {
@@ -8,14 +7,9 @@ function MessageListItem (props) {
   let [userData, setUserData] = useState({})
 
   let getMessageData = useCallback(async () => {
-    try {
-      console.log('folderName', folderName)
-      let importedUserData = await import(
-        `../../../message-data/${folderName}/message_1.json`
-      )
-      console.log('importedUserData', importedUserData)
-      setUserData(importedUserData)
-    } catch (error) {}
+    const importedUserData =
+      await require(`../../../message-data/${folderName}/message_1.json`)
+    setUserData(importedUserData)
   }, [folderName])
 
   useEffect(() => {
@@ -29,8 +23,7 @@ function MessageListItem (props) {
       className='messageItem'
       LinkComponent={Link}
     >
-      {folderName}
-      {/* {userData?.title} */}
+      {userData?.title}
     </Button>
   )
 }
