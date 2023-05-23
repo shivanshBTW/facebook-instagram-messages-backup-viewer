@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Grid, useTheme } from '@mui/material'
+import { Grid, Typography, useTheme } from '@mui/material'
 import {
-  MessageItemAudio,
-  MessageItemAudioContainer,
   MessageItemContent,
   MessageItemDateTimeString,
   MessageItemImage,
@@ -13,8 +11,9 @@ import {
   MessageItemReactionsContainer,
   MessageItemRoot,
   MessageItemSenderName,
-  MessageItemVideo,
-  MessageItemVideoContainer
+  MessageItemAudioVideo,
+  MessageItemAudioVideoContainer,
+  MessageItemSharedInstagramMedia
 } from './styled'
 import decodeEmojiString from '../../../utils/decodeEmojiString'
 import commonConfig from '../../../config/commonConfig'
@@ -31,7 +30,8 @@ function MessageItem (props) {
       photos,
       audio_files,
       timestamp_ms,
-      reactions
+      reactions,
+      share: sharedMedia
     } = {},
     conversationData: { joinable_mode } = {}
   } = props
@@ -108,16 +108,17 @@ function MessageItem (props) {
           {filesDataArray.length
             ? filesDataArray.map((fileData, index) => {
                 let { uri, creation_timestamp } = fileData
-                if (videos?.length) {
+                if (videos?.length || audio_files?.length) {
                   return (
-                    <MessageItemVideoContainer key={creation_timestamp}>
-                      <MessageItemVideo
+                    <MessageItemAudioVideoContainer key={creation_timestamp}>
+                      <MessageItemAudioVideo
                         controls
-                        src={uri}
+                        url={uri}
                         alt={decodeEmojiStringCallback(sender_name) + "'s post"}
-                        //   onClick={handleImageViewerOpen(fileData)}
+                        width='unset'
+                        height={audio_files?.length ? 'unset' : undefined}
                       />
-                    </MessageItemVideoContainer>
+                    </MessageItemAudioVideoContainer>
                   )
                 } else if (photos?.length) {
                   return (
@@ -129,22 +130,43 @@ function MessageItem (props) {
                       />
                     </MessageItemImageContainer>
                   )
-                } else {
-                  return (
-                    <MessageItemAudioContainer key={creation_timestamp}>
-                      <MessageItemAudio
-                        controls
-                        src={uri}
-                        alt={decodeEmojiStringCallback(sender_name) + "'s post"}
-                        onClick={handleImageViewerOpen(fileData)}
-                      />
-                    </MessageItemAudioContainer>
-                  )
                 }
               })
             : null}
 
-          {!content && !filesDataArray.length ? (
+          {sharedMedia?.link ? (
+            <MessageItemSharedInstagramMedia>
+              {sharedMedia.link.includes('instagram') ? (
+                <>
+                  <a
+                    href={`https://www.instagram.com/${sharedMedia.original_content_owner}/`}
+                    target='_blank'
+                    rel='noreferrer'
+                    style={{ textDecoration: 'none' }}
+                  >
+                    <Typography
+                      fontWeight={'bold'}
+                      color={'black'}
+                      fontSize={16 + extraFontSize}
+                    >
+                      {decodeEmojiStringCallback(
+                        sharedMedia.original_content_owner
+                      )}
+                    </Typography>
+                  </a>
+                  <Typography fontSize={16 + extraFontSize}>
+                    {decodeEmojiStringCallback(sharedMedia.share_text)}
+                  </Typography>
+                  <hr />
+                </>
+              ) : null}
+              <a href={sharedMedia.link} target='_blank' rel='noreferrer'>
+                {sharedMedia.link}
+              </a>
+            </MessageItemSharedInstagramMedia>
+          ) : null}
+
+          {!content && !filesDataArray.length && !sharedMedia?.link ? (
             <div style={{ fontStyle: 'italic' }}>Empty Message</div>
           ) : null}
         </MessageItemContent>

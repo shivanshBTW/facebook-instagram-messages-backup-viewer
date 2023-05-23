@@ -1,6 +1,7 @@
 import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
+import ReactPlayer from 'react-player'
 
 export const MessageItemRoot = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1, 1),
@@ -20,16 +21,9 @@ export const MessageItemImage = styled('img')(({ theme }) => ({
   maxHeight: '30vh'
 }))
 
-export const MessageItemVideoContainer = styled('div')(({ theme }) => ({}))
+export const MessageItemAudioVideoContainer = styled('div')(({ theme }) => ({}))
 
-export const MessageItemVideo = styled('video')(({ theme }) => ({
-  maxWidth: '100%',
-  maxHeight: '50vh'
-}))
-
-export const MessageItemAudioContainer = styled('div')(({ theme }) => ({}))
-
-export const MessageItemAudio = styled('audio')(({ theme }) => ({
+export const MessageItemAudioVideo = styled(ReactPlayer)(({ theme }) => ({
   maxWidth: '100%',
   maxHeight: '50vh'
 }))
@@ -39,6 +33,11 @@ export const MessageItemLargeImageContainer = styled('div')(({ theme }) => ({}))
 export const MessageItemLargeImage = styled('img')(({ theme }) => ({
   width: '100%',
   maxHeight: '80vh'
+}))
+
+export const MessageItemSharedInstagramMedia = styled('div')(({ theme }) => ({
+  // width: 'fit-content',
+  // padding: theme.spacing(0.5, 1)
 }))
 
 export const MessageItemDateTimeString = styled(Typography)(({ theme }) => ({}))
