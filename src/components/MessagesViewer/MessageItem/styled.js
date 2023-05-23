@@ -12,6 +12,10 @@ export const MessageItemRoot = styled(Paper)(({ theme }) => ({
 
 export const MessageItemContent = styled(Typography)(({ theme }) => ({}))
 
+export const MessageItemCallDuration = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(0.5, 1)
+}))
+
 export const MessageItemSenderName = styled(Typography)(({ theme }) => ({}))
 
 export const MessageItemImageContainer = styled('div')(({ theme }) => ({}))
@@ -35,10 +39,15 @@ export const MessageItemLargeImage = styled('img')(({ theme }) => ({
   maxHeight: '80vh'
 }))
 
-export const MessageItemSharedInstagramMedia = styled('div')(({ theme }) => ({
-  // width: 'fit-content',
-  // padding: theme.spacing(0.5, 1)
-}))
+export const MessageItemSharedInstagramMedia = styled('div')(
+  ({ theme }) => ({})
+)
+
+export const MessageItemSharedLinkAccountName = styled(Typography)(
+  ({ theme }) => ({
+    color: theme.palette.primary.contrastText
+  })
+)
 
 export const MessageItemDateTimeString = styled(Typography)(({ theme }) => ({}))
 

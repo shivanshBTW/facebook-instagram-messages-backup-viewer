@@ -13,13 +13,17 @@ import {
   MessageItemSenderName,
   MessageItemAudioVideo,
   MessageItemAudioVideoContainer,
-  MessageItemSharedInstagramMedia
+  MessageItemSharedInstagramMedia,
+  MessageItemCallDuration,
+  MessageItemSharedLinkAccountName
 } from './styled'
 import decodeEmojiString from '../../../utils/decodeEmojiString'
 import commonConfig from '../../../config/commonConfig'
 import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
+import stringIncludesArrayOfStrings from '../../../utils/stringIncludesArrayOfStrings'
+import toHoursAndMinutes from '../../../utils/toHoursAndMinutes'
 
 function MessageItem (props) {
   let {
@@ -31,7 +35,9 @@ function MessageItem (props) {
       audio_files,
       timestamp_ms,
       reactions,
-      share: sharedMedia
+      share: sharedMedia,
+      call_duration,
+      users
     } = {},
     conversationData: { joinable_mode } = {}
   } = props
@@ -59,14 +65,18 @@ function MessageItem (props) {
     })
   }
 
+  const [callDuration, setCallDuration] = useState()
+  useEffect(() => {
+    if (!call_duration) return
+    setCallDuration(toHoursAndMinutes(call_duration))
+  }, [call_duration])
+
   useEffect(() => {
     handlePullFilesData(videos || photos || audio_files)
   }, [
     photos,
     videos,
     audio_files
-    // photos?.length ? photos[0] : undefined,
-    // videos?.length ? videos[0] : undefined
   ])
 
   const [largeImageData, setLargeImageData] = useState()
@@ -105,6 +115,17 @@ function MessageItem (props) {
           fontSize={16 + extraFontSize}
         >
           {content && decodeEmojiStringCallback(content)}
+          {callDuration && (
+            <MessageItemCallDuration>
+              <Typography
+                align={isUserTheSender ? 'right' : 'left'}
+                fontSize={14 + extraFontSize}
+              >
+                The call lasted for {callDuration.h}:{callDuration.m}:
+                {callDuration.s} hours
+              </Typography>
+            </MessageItemCallDuration>
+          )}
           {filesDataArray.length
             ? filesDataArray.map((fileData, index) => {
                 let { uri, creation_timestamp } = fileData
@@ -144,7 +165,7 @@ function MessageItem (props) {
                     rel='noreferrer'
                     style={{ textDecoration: 'none' }}
                   >
-                    <Typography
+                    <MessageItemSharedLinkAccountName
                       fontWeight={'bold'}
                       color={'black'}
                       fontSize={16 + extraFontSize}
@@ -152,7 +173,7 @@ function MessageItem (props) {
                       {decodeEmojiStringCallback(
                         sharedMedia.original_content_owner
                       )}
-                    </Typography>
+                    </MessageItemSharedLinkAccountName>
                   </a>
                   <Typography fontSize={16 + extraFontSize}>
                     {decodeEmojiStringCallback(sharedMedia.share_text)}
@@ -160,9 +181,28 @@ function MessageItem (props) {
                   <hr />
                 </>
               ) : null}
-              <a href={sharedMedia.link} target='_blank' rel='noreferrer'>
-                {sharedMedia.link}
-              </a>
+
+              {stringIncludesArrayOfStrings(sharedMedia.link, [
+                'youtu',
+                'facebook',
+                'fb',
+                'soundcloud',
+                'twitch'
+              ]) ? (
+                <MessageItemAudioVideoContainer>
+                  <MessageItemAudioVideo
+                    controls
+                    url={sharedMedia.link}
+                    alt={decodeEmojiStringCallback(sender_name) + "'s post"}
+                    width='unset'
+                    height={audio_files?.length ? 'unset' : undefined}
+                  />
+                </MessageItemAudioVideoContainer>
+              ) : (
+                <a href={sharedMedia.link} target='_blank' rel='noreferrer'>
+                  {sharedMedia.link}
+                </a>
+              )}
             </MessageItemSharedInstagramMedia>
           ) : null}
 
