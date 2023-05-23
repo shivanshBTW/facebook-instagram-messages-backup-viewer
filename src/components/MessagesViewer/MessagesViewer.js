@@ -8,8 +8,10 @@ import React, { useCallback, useEffect, useState } from 'react'
 
 import Box from '@mui/material/Box'
 import Drawer from '@mui/material/Drawer'
+import Button from '@mui/material/Button'
 import MessageItem from './MessageItem/MessageItem'
 import Pagination from '@mui/material/Pagination'
+import SearchIcon from '@mui/icons-material/Search'
 import Toolbar from '@mui/material/Toolbar'
 import commonConfig from '../../config/commonConfig'
 import { useParams } from 'react-router-dom'
@@ -82,6 +84,10 @@ function MessagesViewer (props) {
     setSelectedPage(value)
   }
 
+  const handleToggleFilterDrawer = () => {
+    setIsFilterDrawerOpenFlag(!isFilterDrawerOpenFlag)
+  }
+
   const handleFilterDrawerClose = () => {
     setIsFilterDrawerOpenFlag(false)
   }
@@ -148,7 +154,9 @@ function MessagesViewer (props) {
           [`& .MuiDrawer-paper`]: {
             width: drawerWidth,
             boxSizing: 'border-box'
-          }
+          },
+          position: 'relative',
+          overflowY: 'visible'
         }}
       >
         <Toolbar variant='dense' disableGutters />
@@ -160,7 +168,38 @@ function MessagesViewer (props) {
             onChange={handleSetSearchText}
           />
         </Box>
+
+        <Button
+          variant='contained'
+          onClick={handleToggleFilterDrawer}
+          sx={{
+            position: 'absolute',
+            top: '30%',
+            left: 0,
+            transform: 'translate(-100%,0)',
+            height: 48,
+            width: 48,
+            overflow: 'auto'
+          }}
+        >
+          <SearchIcon />
+        </Button>
       </Drawer>
+
+      <Button
+        variant='contained'
+        onClick={handleToggleFilterDrawer}
+        sx={{
+          position: 'absolute',
+          top: '30%',
+          right: 0,
+          height: 48,
+          width: 48,
+          overflow: 'auto'
+        }}
+      >
+        <SearchIcon />
+      </Button>
     </MessagesViewerRoot>
   )
 }
