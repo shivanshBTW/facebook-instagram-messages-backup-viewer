@@ -2,7 +2,12 @@ import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 
 export const MessagesViewerRoot = styled('div')(({ theme }) => ({
-  padding: theme.spacing(1, 15)
+  [theme.breakpoints.up('xs')]: {
+    padding: theme.spacing(1, 3)
+  },
+  [theme.breakpoints.up('md')]: {
+    padding: theme.spacing(1, 15)
+  }
 }))
 
 export const MessagesViewerPaginationBarContainer = styled('div')(

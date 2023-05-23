@@ -36,13 +36,12 @@ function MessageItem (props) {
       timestamp_ms,
       reactions,
       share: sharedMedia,
-      call_duration,
-      users
+      call_duration
     } = {},
     conversationData: { joinable_mode } = {}
   } = props
 
-  let { extraFontSize } = commonConfig
+  let { extraFontSize, numberConfig } = commonConfig
 
   let theme = useTheme()
   let isUserTheSender = commonConfig.userName === sender_name
@@ -54,7 +53,7 @@ function MessageItem (props) {
 
   let handlePullFilesData = filesArray => {
     Promise.all(
-      filesArray?.map(async (fileData, index) => {
+      filesArray?.map(async fileData => {
         let { uri, creation_timestamp } = fileData
         let imageURI = uri.replace('messages/inbox/', '')
         let imageFile = await require(`../../../message-data/${imageURI}`)
@@ -94,7 +93,7 @@ function MessageItem (props) {
         </MessageItemSenderName>
       )}
       <MessageItemRoot
-        elevation={3}
+        elevation={10}
         style={
           !isUserTheSender
             ? {
@@ -104,8 +103,6 @@ function MessageItem (props) {
             : undefined
         }
       >
-        {/* reel: train pencture ho gya */}
-
         <MessageItemContent
           component={'div'}
           align={isUserTheSender ? 'right' : 'left'}
@@ -118,13 +115,15 @@ function MessageItem (props) {
                 align={isUserTheSender ? 'right' : 'left'}
                 fontSize={14 + extraFontSize}
               >
-                The call lasted for {callDuration.h}:{callDuration.m}:
-                {callDuration.s} hours
+                The call lasted for&nbsp;
+                {callDuration.h.toLocaleString('en-US', numberConfig)}:
+                {callDuration.m.toLocaleString('en-US', numberConfig)}:
+                {callDuration.s.toLocaleString('en-US', numberConfig)}
               </Typography>
             </MessageItemCallDuration>
           )}
           {filesDataArray.length
-            ? filesDataArray.map((fileData, index) => {
+            ? filesDataArray.map(fileData => {
                 let { uri, creation_timestamp } = fileData
                 if (videos?.length || audio_files?.length) {
                   return (
@@ -219,7 +218,7 @@ function MessageItem (props) {
                 : undefined
             }
           >
-            {reactions.map((reactionData, index) => {
+            {reactions.map(reactionData => {
               let { reaction, actor } = reactionData
               return (
                 <MessageItemReaction key={actor} elevation={8}>

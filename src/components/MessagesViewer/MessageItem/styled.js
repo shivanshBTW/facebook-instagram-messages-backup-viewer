@@ -7,11 +7,12 @@ export const MessageItemRoot = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1, 1),
   maxWidth: '60vw',
   textAlign: 'left',
-  position: 'relative',
-  overflow:'hidden'
+  position: 'relative'
 }))
 
-export const MessageItemContent = styled(Typography)(({ theme }) => ({}))
+export const MessageItemContent = styled(Typography)(({ theme }) => ({
+  overflow: 'hidden'
+}))
 
 export const MessageItemCallDuration = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(0.5, 1)
@@ -61,7 +62,7 @@ export const MessageItemReactionsContainer = styled('div')(({ theme }) => ({
   left: '100%',
   transform: 'translate(0, -50%)',
   width: 'max-content',
-  maxWidth: '40vw',
+  maxWidth: '25vw',
   flexWrap: 'wrap',
   margin: theme.spacing(0, 1)
 }))
