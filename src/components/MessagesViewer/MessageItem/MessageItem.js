@@ -9,6 +9,8 @@ import {
   MessageItemImageContainer,
   MessageItemLargeImage,
   MessageItemLargeImageContainer,
+  MessageItemReaction,
+  MessageItemReactionsContainer,
   MessageItemRoot,
   MessageItemSenderName,
   MessageItemVideo,
@@ -28,7 +30,8 @@ function MessageItem (props) {
       videos,
       photos,
       audio_files,
-      timestamp_ms
+      timestamp_ms,
+      reactions
     } = {},
     conversationData: { joinable_mode } = {}
   } = props
@@ -145,6 +148,28 @@ function MessageItem (props) {
             <div style={{ fontStyle: 'italic' }}>Empty Message</div>
           ) : null}
         </MessageItemContent>
+
+        {reactions?.length ? (
+          <MessageItemReactionsContainer
+            style={
+              isUserTheSender
+                ? {
+                    left: 'unset',
+                    right: '100%'
+                  }
+                : undefined
+            }
+          >
+            {reactions.map((reactionData, index) => {
+              let { reaction, actor } = reactionData
+              return (
+                <MessageItemReaction key={actor} elevation={8}>
+                  {actor} {decodeEmojiStringCallback(reaction)}
+                </MessageItemReaction>
+              )
+            })}
+          </MessageItemReactionsContainer>
+        ) : null}
       </MessageItemRoot>
 
       <MessageItemDateTimeString
