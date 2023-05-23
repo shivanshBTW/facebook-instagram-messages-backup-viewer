@@ -9,7 +9,8 @@ import Typography from '@mui/material/Typography'
 
 const pages = []
 
-function Header () {
+function Header (props) {
+  const { isDarkMode, setDarkMode } = props
   const [anchorElNav, setAnchorElNav] = React.useState(null)
 
   const handleOpenNavMenu = event => {
@@ -18,6 +19,10 @@ function Header () {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null)
+  }
+
+  const handleToggleDarkMode = () => {
+    setDarkMode(!isDarkMode)
   }
 
   return (
@@ -52,6 +57,18 @@ function Header () {
                 {page}
               </Button>
             ))}
+          </Box>
+
+          <Box sx={{ flexGrow: 1 }} />
+          <Box>
+            <Button
+              onClick={handleToggleDarkMode}
+              variant='contained'
+              color='info'
+              // sx={{ color: 'white', display: 'block' }}
+            >
+              {isDarkMode ? 'Light' : 'Dark'}
+            </Button>
           </Box>
         </Toolbar>
       </Container>
