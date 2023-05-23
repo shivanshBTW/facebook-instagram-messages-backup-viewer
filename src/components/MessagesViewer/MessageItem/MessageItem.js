@@ -73,11 +73,7 @@ function MessageItem (props) {
 
   useEffect(() => {
     handlePullFilesData(videos || photos || audio_files)
-  }, [
-    photos,
-    videos,
-    audio_files
-  ])
+  }, [photos, videos, audio_files])
 
   const [largeImageData, setLargeImageData] = useState()
   const handleImageViewerOpen = photoData => () => {
@@ -111,6 +107,7 @@ function MessageItem (props) {
         {/* reel: train pencture ho gya */}
 
         <MessageItemContent
+          component={'div'}
           align={isUserTheSender ? 'right' : 'left'}
           fontSize={16 + extraFontSize}
         >

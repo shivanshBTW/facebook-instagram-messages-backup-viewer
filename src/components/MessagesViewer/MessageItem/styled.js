@@ -7,7 +7,8 @@ export const MessageItemRoot = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1, 1),
   maxWidth: '60vw',
   textAlign: 'left',
-  position: 'relative'
+  position: 'relative',
+  overflow:'hidden'
 }))
 
 export const MessageItemContent = styled(Typography)(({ theme }) => ({}))
