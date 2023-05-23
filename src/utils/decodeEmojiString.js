@@ -9,4 +9,5 @@ let decodeEmojiString = str => {
   return Buffer.from(arr).toString('utf8')
 }
 
+window.decodeEmojiString = decodeEmojiString
 export default decodeEmojiString

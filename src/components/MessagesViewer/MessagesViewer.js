@@ -1,20 +1,29 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import MessageItem from './MessageItem/MessageItem'
-import { Grid } from '@mui/material'
+import { Grid, TextField } from '@mui/material'
 import {
   MessagesViewerPaginationBarContainer,
   MessagesViewerPaginationTextField,
   MessagesViewerRoot
 } from './styled'
+import React, { useCallback, useEffect, useState } from 'react'
+
+import Box from '@mui/material/Box'
+import Drawer from '@mui/material/Drawer'
+import MessageItem from './MessageItem/MessageItem'
 import Pagination from '@mui/material/Pagination'
+import Toolbar from '@mui/material/Toolbar'
+import commonConfig from '../../config/commonConfig'
+import { useParams } from 'react-router-dom'
 
 function MessagesViewer (props) {
   const { userId } = useParams()
+  const { drawerWidth, itemsPerPage: itemsPerPageConfig } = commonConfig
   const [selectedPage, setSelectedPage] = useState(1)
-  const [itemsPerPage] = useState(10)
+  const [itemsPerPage] = useState(itemsPerPageConfig)
   const [conversationData, setConversationData] = useState({})
   const [totalPageCount, setTotalPageCount] = useState(1)
+  const [isFilterDrawerOpenFlag, setIsFilterDrawerOpenFlag] = useState(true)
+  const [searchText, setSearchText] = React.useState('')
+  const [searchResults, setSearchResults] = React.useState([])
 
   let getMessageData = useCallback(async () => {
     let allConversationsArray = []
@@ -51,9 +60,11 @@ function MessagesViewer (props) {
       finalConversationObject.messages.toReversed()
 
     console.log('finalConversationObject', finalConversationObject)
-    setTotalPageCount(Math.ceil(conversationData / itemsPerPage))
+    setTotalPageCount(
+      Math.ceil(finalConversationObject?.messages?.length / itemsPerPage)
+    )
     setConversationData(finalConversationObject)
-  }, [userId])
+  }, [userId, itemsPerPage])
 
   useEffect(() => {
     getMessageData()
@@ -63,9 +74,20 @@ function MessagesViewer (props) {
     setSelectedPage(event.target.value)
   }
 
+  const handleSetSearchText = event => {
+    setSearchText(event.target.value)
+  }
+
   const handlePaginationSelectorChange = (event, value) => {
     setSelectedPage(value)
   }
+
+  const handleFilterDrawerClose = () => {
+    setIsFilterDrawerOpenFlag(false)
+  }
+
+  const pageStartMessageIndex = (selectedPage - 1) * itemsPerPage
+  const pageEndMessageIndex = pageStartMessageIndex + itemsPerPage
 
   return (
     <MessagesViewerRoot>
@@ -76,15 +98,17 @@ function MessagesViewer (props) {
         alignItems='flex-start'
         spacing={{ xs: 2, md: 3 }}
       >
-        {conversationData?.messages?.map(messageData => {
-          return (
-            <MessageItem
-              conversationData={conversationData}
-              messageData={messageData}
-              key={messageData.timestamp_ms}
-            />
-          )
-        })}
+        {conversationData?.messages
+          ?.slice(pageStartMessageIndex, pageEndMessageIndex)
+          .map(messageData => {
+            return (
+              <MessageItem
+                conversationData={conversationData}
+                messageData={messageData}
+                key={messageData.timestamp_ms}
+              />
+            )
+          })}
       </Grid>
 
       {totalPageCount > 1 && (
@@ -109,9 +133,34 @@ function MessagesViewer (props) {
             name='pagination-text-input'
             value={selectedPage}
             onChange={handlePaginationTextChange}
+            sx={{ minWidth: `${totalPageCount.toString().length}ch` }}
           />
         </MessagesViewerPaginationBarContainer>
       )}
+
+      <Drawer
+        anchor={'right'}
+        open={isFilterDrawerOpenFlag}
+        onClose={handleFilterDrawerClose}
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: {
+            width: drawerWidth,
+            boxSizing: 'border-box'
+          }
+        }}
+      >
+        <Toolbar variant='dense' disableGutters />
+        <Box sx={{ overflow: 'auto', padding: 2 }}>
+          <TextField
+            type='text'
+            label='Search'
+            value={searchText}
+            onChange={handleSetSearchText}
+          />
+        </Box>
+      </Drawer>
     </MessagesViewerRoot>
   )
 }

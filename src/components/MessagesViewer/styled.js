@@ -1,5 +1,5 @@
-import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
+import { styled } from '@mui/material/styles'
 
 export const MessagesViewerRoot = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('xs')]: {
@@ -24,7 +24,7 @@ export const MessagesViewerPaginationBarContainer = styled('div')(
 
 export const MessagesViewerPaginationTextField = styled(TextField)(
   ({ theme }) => ({
-    width: theme.spacing(8),
+    width: theme.spacing(12),
     marginLeft: theme.spacing(4)
   })
 )

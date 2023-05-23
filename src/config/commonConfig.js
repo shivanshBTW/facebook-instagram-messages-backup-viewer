@@ -4,7 +4,9 @@ let commonConfig = {
   numberConfig: {
     minimumIntegerDigits: 2,
     useGrouping: false
-  }
+  },
+  drawerWidth: 300,
+  itemsPerPage: 10
 }
 
 export default commonConfig
