@@ -16,6 +16,29 @@ import Toolbar from '@mui/material/Toolbar'
 import commonConfig from '../../config/commonConfig'
 import { useParams } from 'react-router-dom'
 
+function FilterDrawerToggleButton (props) {
+  let {
+    rightVal = 0,
+    handleToggleFilterDrawer = () => {},
+    positionVal = 'absolute'
+  } = props
+  return (
+    <Button
+      variant='contained'
+      onClick={handleToggleFilterDrawer}
+      sx={{
+        position: positionVal,
+        top: '30%',
+        right: rightVal,
+        height: 64,
+        width: 64
+      }}
+    >
+      <SearchIcon />
+    </Button>
+  )
+}
+
 function MessagesViewer (props) {
   const { userId } = useParams()
   const { drawerWidth, itemsPerPage: itemsPerPageConfig } = commonConfig
@@ -156,7 +179,9 @@ function MessagesViewer (props) {
             boxSizing: 'border-box'
           },
           position: 'relative',
-          overflowY: 'visible'
+          ['.MuiDrawer-paperAnchorRight']: {
+            overflow: 'visible'
+          }
         }}
       >
         <Toolbar variant='dense' disableGutters />
@@ -169,37 +194,17 @@ function MessagesViewer (props) {
           />
         </Box>
 
-        <Button
-          variant='contained'
-          onClick={handleToggleFilterDrawer}
-          sx={{
-            position: 'absolute',
-            top: '30%',
-            left: 0,
-            transform: 'translate(-100%,0)',
-            height: 48,
-            width: 48,
-            overflow: 'auto'
-          }}
-        >
-          <SearchIcon />
-        </Button>
+        <FilterDrawerToggleButton
+          rightVal={'100%'}
+          handleToggleFilterDrawer={handleToggleFilterDrawer}
+        />
       </Drawer>
 
-      <Button
-        variant='contained'
-        onClick={handleToggleFilterDrawer}
-        sx={{
-          position: 'absolute',
-          top: '30%',
-          right: 0,
-          height: 48,
-          width: 48,
-          overflow: 'auto'
-        }}
-      >
-        <SearchIcon />
-      </Button>
+      <FilterDrawerToggleButton
+        rightVal={0}
+        positionVal={'fixed'}
+        handleToggleFilterDrawer={handleToggleFilterDrawer}
+      />
     </MessagesViewerRoot>
   )
 }
