@@ -15,7 +15,8 @@ import {
   MessageItemAudioVideoContainer,
   MessageItemSharedInstagramMedia,
   MessageItemCallDuration,
-  MessageItemSharedLinkAccountName
+  MessageItemSharedLinkAccountName,
+  MessageItemLink
 } from './styled'
 import decodeEmojiString from '../../../utils/decodeEmojiString'
 import commonConfig from '../../../config/commonConfig'
@@ -155,7 +156,7 @@ function MessageItem (props) {
             <MessageItemSharedInstagramMedia>
               {sharedMedia.link.includes('instagram') ? (
                 <>
-                  <a
+                  <MessageItemLink
                     href={`https://www.instagram.com/${sharedMedia.original_content_owner}/`}
                     target='_blank'
                     rel='noreferrer'
@@ -170,7 +171,7 @@ function MessageItem (props) {
                         sharedMedia.original_content_owner
                       )}
                     </MessageItemSharedLinkAccountName>
-                  </a>
+                  </MessageItemLink>
                   <Typography fontSize={16 + extraFontSize}>
                     {decodeEmojiStringCallback(sharedMedia.share_text)}
                   </Typography>
@@ -195,9 +196,9 @@ function MessageItem (props) {
                   />
                 </MessageItemAudioVideoContainer>
               ) : (
-                <a href={sharedMedia.link} target='_blank' rel='noreferrer'>
+                <MessageItemLink href={sharedMedia.link} target='_blank' rel='noreferrer'>
                   {sharedMedia.link}
-                </a>
+                </MessageItemLink>
               )}
             </MessageItemSharedInstagramMedia>
           ) : null}

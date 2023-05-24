@@ -6,15 +6,14 @@ import {
 } from './styled'
 import React, { useCallback, useEffect, useState } from 'react'
 
-import Box from '@mui/material/Box'
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
 import MessageItem from './MessageItem/MessageItem'
 import Pagination from '@mui/material/Pagination'
 import SearchIcon from '@mui/icons-material/Search'
-import Toolbar from '@mui/material/Toolbar'
 import commonConfig from '../../config/commonConfig'
 import { useParams } from 'react-router-dom'
+import FilterDrawerContent from './FilterDrawerContent/FilterDrawerContent'
 
 function FilterDrawerToggleButton (props) {
   let {
@@ -46,7 +45,7 @@ function MessagesViewer (props) {
   const [itemsPerPage] = useState(itemsPerPageConfig)
   const [conversationData, setConversationData] = useState({})
   const [totalPageCount, setTotalPageCount] = useState(1)
-  const [isFilterDrawerOpenFlag, setIsFilterDrawerOpenFlag] = useState(true)
+  const [isFilterDrawerOpenFlag, setIsFilterDrawerOpenFlag] = useState(false)
   const [searchText, setSearchText] = React.useState('')
   const [searchResults, setSearchResults] = React.useState([])
 
@@ -84,7 +83,6 @@ function MessagesViewer (props) {
     finalConversationObject.messages =
       finalConversationObject.messages.toReversed()
 
-    console.log('finalConversationObject', finalConversationObject)
     setTotalPageCount(
       Math.ceil(finalConversationObject?.messages?.length / itemsPerPage)
     )
@@ -117,6 +115,12 @@ function MessagesViewer (props) {
 
   const pageStartMessageIndex = (selectedPage - 1) * itemsPerPage
   const pageEndMessageIndex = pageStartMessageIndex + itemsPerPage
+
+  const findPageNumberOfIndex = index => Math.ceil(index / itemsPerPage)
+
+  const handleFilterMessageOpen = messageIndex => {
+    setSelectedPage(findPageNumberOfIndex(messageIndex))
+  }
 
   return (
     <MessagesViewerRoot>
@@ -179,20 +183,19 @@ function MessagesViewer (props) {
             boxSizing: 'border-box'
           },
           position: 'relative',
-          ['.MuiDrawer-paperAnchorRight']: {
+          '.MuiDrawer-paperAnchorRight': {
             overflow: 'visible'
           }
         }}
       >
-        <Toolbar variant='dense' disableGutters />
-        <Box sx={{ overflow: 'auto', padding: 2 }}>
-          <TextField
-            type='text'
-            label='Search'
-            value={searchText}
-            onChange={handleSetSearchText}
-          />
-        </Box>
+        <FilterDrawerContent
+          conversationData={conversationData}
+          searchText={searchText}
+          searchResults={searchResults}
+          setSearchResults={setSearchResults}
+          handleSetSearchText={handleSetSearchText}
+          handleFilterMessageOpen={handleFilterMessageOpen}
+        />
 
         <FilterDrawerToggleButton
           rightVal={'100%'}
