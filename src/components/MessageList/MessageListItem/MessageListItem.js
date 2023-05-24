@@ -21,7 +21,7 @@ function MessageListItem (props) {
 
   return (
     <Button
-      to={folderName}
+      to={`messages/${folderName}`}
       variant='contained'
       className='messageItem'
       LinkComponent={Link}

@@ -72,6 +72,4 @@ export const MessageItemReaction = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(0.5, 1)
 }))
 
-export const MessageItemLink = styled('a')(({ theme }) => ({
-  color: theme.palette.primary.main
-}))
+export const MessageItemLink = styled('a')(({ theme }) => ({}))

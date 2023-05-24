@@ -41,7 +41,7 @@ function FilterDrawerToggleButton (props) {
 function MessagesViewer (props) {
   const { userId } = useParams()
   const { drawerWidth, itemsPerPage: itemsPerPageConfig } = commonConfig
-  const [selectedPage, setSelectedPage] = useState(1)
+  const [selectedPage, _setSelectedPage] = useState(1)
   const [itemsPerPage] = useState(itemsPerPageConfig)
   const [conversationData, setConversationData] = useState({})
   const [totalPageCount, setTotalPageCount] = useState(1)
@@ -101,6 +101,14 @@ function MessagesViewer (props) {
     setSearchText(event.target.value)
   }
 
+  const setSelectedPage = val => {
+    _setSelectedPage(val || val === 0 ? parseInt(val) : null)
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
+
   const handlePaginationSelectorChange = (event, value) => {
     setSelectedPage(value)
   }
@@ -155,7 +163,7 @@ function MessagesViewer (props) {
             shape='rounded'
             variant='outlined'
             name='pagination-selector'
-            page={selectedPage}
+            page={selectedPage || ''}
             onChange={handlePaginationSelectorChange}
           />
           <MessagesViewerPaginationTextField
@@ -164,7 +172,7 @@ function MessagesViewer (props) {
             id='outlined-size-small'
             size='small'
             name='pagination-text-input'
-            value={selectedPage}
+            value={selectedPage || ''}
             onChange={handlePaginationTextChange}
             sx={{ minWidth: `${totalPageCount.toString().length}ch` }}
           />

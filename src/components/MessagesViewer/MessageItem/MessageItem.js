@@ -160,7 +160,12 @@ function MessageItem (props) {
                     href={`https://www.instagram.com/${sharedMedia.original_content_owner}/`}
                     target='_blank'
                     rel='noreferrer'
-                    style={{ textDecoration: 'none' }}
+                    sx={{
+                      textDecoration: 'none',
+                      color: !isUserTheSender
+                        ? theme.palette.primary.contrastText
+                        : theme.palette.primary.main
+                    }}
                   >
                     <MessageItemSharedLinkAccountName
                       fontWeight={'bold'}
@@ -196,7 +201,16 @@ function MessageItem (props) {
                   />
                 </MessageItemAudioVideoContainer>
               ) : (
-                <MessageItemLink href={sharedMedia.link} target='_blank' rel='noreferrer'>
+                <MessageItemLink
+                  href={sharedMedia.link}
+                  target='_blank'
+                  rel='noreferrer'
+                  sx={{
+                    color: !isUserTheSender
+                      ? theme.palette.primary.contrastText
+                      : theme.palette.primary.main
+                  }}
+                >
                   {sharedMedia.link}
                 </MessageItemLink>
               )}

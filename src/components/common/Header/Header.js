@@ -6,11 +6,13 @@ import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
+import { matchPath, useLocation, useParams } from 'react-router-dom'
 
 const pages = []
 
 function Header (props) {
   const { isDarkMode, setDarkMode } = props
+
   const [anchorElNav, setAnchorElNav] = React.useState(null)
 
   const handleOpenNavMenu = event => {
@@ -24,7 +26,6 @@ function Header (props) {
   const handleToggleDarkMode = () => {
     setDarkMode(!isDarkMode)
   }
-
   return (
     <AppBar position='sticky' sx={{ zIndex: theme => theme.zIndex.drawer + 1 }}>
       <Container maxWidth='xl'>
@@ -65,7 +66,6 @@ function Header (props) {
               onClick={handleToggleDarkMode}
               variant='contained'
               color='info'
-              // sx={{ color: 'white', display: 'block' }}
             >
               {isDarkMode ? 'Light' : 'Dark'}
             </Button>
