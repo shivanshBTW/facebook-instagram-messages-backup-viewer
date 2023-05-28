@@ -1,6 +1,32 @@
-# Getting Started with Create React App
+# Facebook Instagram Messages Backup Viewer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Created this project as accessing old instagram and facebook messages is way too complicated and needed to find a way to read my old messages to relive some memories.
+
+This is completely open source and everything you need to run it will not need internet access at all.
+It requires you to download your data from [Facebook's Download your Information page](https://www.facebook.com/privacy/guide/dyi/?entry_point=privacy_center_home)
+
+More on how to use this data later in the readme
+
+## Steps to run
+
+You have to select JSON format while requesting the account infomation, and for good measure, use the highest quality of media possible. This will improve your experience.
+
+Once you have requested your account data information, you need to extract the zip of the data. Let's assume your extracted folder is `instagram-data`
+
+Now, clone this project onto your machine, or download it's ZIP from the download zip option. Now once you download or extract this zip (let's assume it's folder is called `FIMB-project`), copy all folders under `instagram-data/messages/inbox` to `FIMB-project/src/message-data/`
+
+Now, here's the kinda tricky part, you need a list of names of all folders you just pasted. For example you have 3 folders that you just pasted into `message-data` called `user1`, `user2`, `user3` you have to create a list that looks like this
+`["user1", "user2", "user3"]`
+
+hint: one easy way of doing this is selecting all such folders in visual studio code (free software) and right click and select copy relative path. Then paste everything onto a new file, select everything except the folder name for one of the entries, copy it, paste it in find and replace and replace it with an empty string. Now, you have a list of all the names and just need to format them in the above manner(you basically have to create an array of strings).
+
+### `npm start`
+
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
 ## Available Scripts
 
