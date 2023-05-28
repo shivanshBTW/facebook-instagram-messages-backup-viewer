@@ -12,7 +12,7 @@ import MessageItem from './MessageItem/MessageItem'
 import Pagination from '@mui/material/Pagination'
 import SearchIcon from '@mui/icons-material/Search'
 import commonConfig from '../../config/commonConfig'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import FilterDrawerContent from './FilterDrawerContent/FilterDrawerContent'
 
 function FilterDrawerToggleButton (props) {
@@ -39,15 +39,20 @@ function FilterDrawerToggleButton (props) {
 }
 
 function MessagesViewer (props) {
-  const { userId } = useParams()
+  const { userId, selectedPage: selectedPageString } = useParams()
+  const selectedPage = parseInt(selectedPageString)
+  const navigate = useNavigate()
   const { drawerWidth, itemsPerPage: itemsPerPageConfig } = commonConfig
-  const [selectedPage, _setSelectedPage] = useState(1)
   const [itemsPerPage] = useState(itemsPerPageConfig)
   const [conversationData, setConversationData] = useState({})
   const [totalPageCount, setTotalPageCount] = useState(1)
   const [isFilterDrawerOpenFlag, setIsFilterDrawerOpenFlag] = useState(false)
   const [searchText, setSearchText] = React.useState('')
   const [searchResults, setSearchResults] = React.useState([])
+
+  const _setSelectedPage = selectedPageNumber => {
+    navigate(`/messages/${userId}/${selectedPageNumber}`, { replace: true })
+  }
 
   let getMessageData = useCallback(async () => {
     let allConversationsArray = []
@@ -155,11 +160,9 @@ function MessagesViewer (props) {
       {totalPageCount > 1 && (
         <MessagesViewerPaginationBarContainer>
           <Pagination
-            showFirstButton
-            showLastButton
             count={totalPageCount}
             color='primary'
-            size='large'
+            size='medium'
             shape='rounded'
             variant='outlined'
             name='pagination-selector'

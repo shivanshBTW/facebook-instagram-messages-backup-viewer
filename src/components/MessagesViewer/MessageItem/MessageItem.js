@@ -45,7 +45,7 @@ function MessageItem (props) {
   let { extraFontSize, numberConfig } = commonConfig
 
   let theme = useTheme()
-  let isUserTheSender = commonConfig.userName === sender_name
+  let isUserTheSender = commonConfig.userName.toLowerCase() === sender_name.toLowerCase()
   let isGroupMessage = !!joinable_mode
 
   let decodeEmojiStringCallback = useCallback(decodeEmojiString, [])
@@ -253,6 +253,7 @@ function MessageItem (props) {
       </MessageItemDateTimeString>
 
       <Dialog
+        fullWidth
         open={!!largeImageData}
         onClose={handleImageViewerClose}
         aria-labelledby='alert-dialog-title'

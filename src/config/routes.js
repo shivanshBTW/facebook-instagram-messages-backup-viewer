@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { Navigate, createBrowserRouter } from 'react-router-dom'
 import Home from '../components/Home/Home'
 import MessagesViewer from '../components/MessagesViewer/MessagesViewer'
 
@@ -8,7 +8,7 @@ let routesArray = createBrowserRouter([
     children: [
       {
         path: '',
-        element: <Home />
+        element: <Navigate to='/messages' replace />
       },
       {
         path: 'messages',
@@ -19,7 +19,13 @@ let routesArray = createBrowserRouter([
           },
           {
             path: ':userId',
-            element: <MessagesViewer />
+            children: [
+              {
+                path: '',
+                element: <Navigate to='1' replace />
+              },
+              { path: ':selectedPage', element: <MessagesViewer /> }
+            ]
           }
         ]
       }
