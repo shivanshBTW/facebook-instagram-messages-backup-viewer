@@ -51,7 +51,7 @@ function MessagesViewer (props) {
   const [searchResults, setSearchResults] = React.useState([])
 
   const _setSelectedPage = selectedPageNumber => {
-    navigate(`/messages/${userId}/${selectedPageNumber}`, { replace: true })
+    navigate(`/messages/${userId}/${selectedPageNumber}`)
   }
 
   let getMessageData = useCallback(async () => {
@@ -105,6 +105,30 @@ function MessagesViewer (props) {
   const handleSetSearchText = event => {
     setSearchText(event.target.value)
   }
+
+  const handleNextPage = () => {
+    setSelectedPage(selectedPage + 1)
+  }
+  const handlePreviousPage = () => {
+    setSelectedPage(selectedPage - 1)
+  }
+
+  const handleKeyPress = e => {
+    e = e || window.event
+    if (e.keyCode === 37) {
+      handlePreviousPage()
+    } else if (e.keyCode === 39) {
+      handleNextPage()
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('keyup', handleKeyPress)
+
+    return () => {
+      window.removeEventListener('keyup', handleKeyPress)
+    }
+  }, [handleKeyPress])
 
   const setSelectedPage = val => {
     _setSelectedPage(val || val === 0 ? parseInt(val) : null)
